@@ -1,0 +1,24 @@
+﻿@page "/own"
+@using TestTask.Core;
+@using TestTask.Interfaces;
+@inject IAllOwnerships Owns;
+@inject NavigationManager NavManager;
+
+<PageTitle>Ownership List</PageTitle>
+
+<div class="row">
+    <div class="col text-center">
+        <h1>Welcome to Ownership registry</h1>
+    </div>
+</div>
+<button class="btn btn-primary justify-content-center" @onclick="CreateOwn">Create New Ownership</button>
+
+
+
+
+@code {
+    private void CreateOwn()
+    {
+        NavManager.NavigateTo("/own/create");
+    }
+}

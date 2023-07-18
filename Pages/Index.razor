@@ -1,0 +1,25 @@
+﻿@page "/"
+@using TestTask.Core;
+@using TestTask.Interfaces;
+@inject IAllUsers Users;
+@inject NavigationManager NavManager;
+
+<PageTitle>Index</PageTitle>
+
+<div class="row">
+    <div class="col text-center">
+        <h1>Welcome to Ownership registry</h1>
+    </div>
+</div>
+<button class="btn btn-primary justify-content-center" @onclick="CreateUser">Create New User</button>
+
+
+
+<UsersListTable/>
+
+@code {
+    private void CreateUser()
+    {
+        NavManager.NavigateTo("/user/create");
+    }
+}

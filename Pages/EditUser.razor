@@ -1,0 +1,11 @@
+﻿@page "/user/edit"
+@using TestTask.Interfaces;
+@inject IAllUsers Users;
+
+<UserView User ="@Users.GetObjectUser(Convert.ToInt32(Id))"/>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string Id { get; set; }
+}

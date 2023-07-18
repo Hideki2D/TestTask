@@ -1,0 +1,10 @@
+﻿@page "/own/edit"
+@using TestTask.Interfaces;
+@inject IAllOwnerships Owns;
+<OwnView Own="@Owns.GetObjectOwnership(Convert.ToInt32(Id))" />
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string Id { get; set; }
+}

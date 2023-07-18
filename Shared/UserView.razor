@@ -1,0 +1,75 @@
+﻿@using TestTask.Interfaces;
+@using TestTask.Models;
+@inject IAllUsers Users;
+@inject NavigationManager NavigationManager;
+<div class="table-responsive">
+    <table class="table table-stripped">
+        <thead class="thead-light">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Number</th>
+            </tr>
+        </thead>
+            @if(!Users.isUserExist(User.Id))
+            {
+                <tbody>
+                    <tr>
+                        <td><input type="text" placeholder="Name" name="Name" @bind="@User.Name" /></td>
+                        <td><input type="email" placeholder="Email" name="Email" @bind="@User.Email" /></td>
+                        <td><input type="text" placeholder="Address" name="Address" @bind="@User.Address" /></td>
+                        <td><input type="tel" placeholder="Number" name="Number" @bind="@User.Number" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="justify-content-center d-flex">
+                                <button class="btn btn-primary font-32 padd-20 font-wide" @onclick="Create">Create</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+            else
+            {
+                <tbody>
+                    <tr>
+                        <td><input type="text" placeholder="Name" name="Name" @bind="@User.Name"/></td>
+                        <td><input type="email" placeholder="Email" name="Email" @bind="@User.Email" /></td>
+                        <td><input type="text" placeholder="Address" name="Address" @bind="@User.Address" /></td>
+                        <td><input type="tel" placeholder="Number" name="Number" @bind="@User.Number" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                             <div class="justify-content-center d-flex">
+                                <button class="btn btn-primary font-32 padd-20 font-wide" @onclick="Edit">Save</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+        
+    </table>
+</div>
+
+
+
+
+@code 
+{
+    [Parameter]
+    public User User { get; set; } = new User();
+
+    protected void Create()
+    {
+        Users.CreateNewUser(User);
+        NavigationManager.NavigateTo("/");
+    }
+
+    protected void Edit()
+    {
+
+        Users.EditUser(User);
+        NavigationManager.NavigateTo("/");
+    }
+}

@@ -1,0 +1,127 @@
+﻿@using TestTask.Interfaces;
+@using TestTask.Models;
+@inject IAllOwnerships Owns;
+@inject IAllUsers Users;
+@inject NavigationManager NavigationManager;
+<div class="table-responsive">
+    <table class="table table-stripped">
+        <thead class="thead-light">
+            <tr>
+                <th>Name</th>
+                <th>OwnerId</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Loss Price Period</th>
+                <th>Loss Price Per Period (%)</th>
+                <th>Intial Price</th>
+            </tr>
+        </thead>
+        @if (Owns.GetObjectOwnership(Own.Id) == null)
+        {
+            <tbody>
+                <tr>
+                    <td><input type="text" placeholder="Name" name="Name" @bind-value="@Own.Name" /></td>
+                    <td><div class="red" hidden=@isUserNotExist>User dosen't exist'</div><input type="text" placeholder="Owner Id" name="OwnerId" @bind-value="@Own.OwnerId" /></td>
+                    <td>
+                        <InputSelect @bind-Value="Own.Type">
+                            @foreach (var type in Enum.GetValues(typeof(OwnershipType)))
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        </InputSelect>
+                    </td>
+                    <td><input type="date" placeholder="Date" name="Date" @bind-value="@Own.Date" /></td>
+                    <td>
+                        <InputSelect @bind-Value="Own.LPPeriod">
+                            @foreach (var period in Enum.GetValues(typeof(Period)))
+                            {
+                                <option value="@period">@period</option>
+                            }
+                        </InputSelect>
+                    </td>
+                    <td><input type="text" placeholder="LossPricePerPeriod" name="LossPricePerPeriod" @bind-value="@Own.LossPricePerPeriod" /></td>
+                    <td><input type="text" placeholder="Initial Price" name="InitialPrice" @bind-value="@Own.InitialPrice" /></td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <div class="justify-content-center d-flex">
+                            <button class="btn btn-primary font-32 padd-20 font-wide" @onclick="Create">Create</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        }
+        else
+        {
+            <tbody>
+                <tr>
+                    <td><input type="text" placeholder="Name" name="Name" @bind-value="@Own.Name"/></td>
+                    <td><div class="red" hidden=@isUserNotExist>User dosen't exist</div><input type="text" placeholder="Owner Id" name="OwnerId" @bind-value="@Own.OwnerId" /></td>
+                    <td>
+                        <InputSelect @bind-Value="Own.Type">
+                            @foreach (var type in Enum.GetValues(typeof(OwnershipType)))
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        </InputSelect>
+                    </td>
+                    <td><input type="date" placeholder="Date" name="Date" @bind-value="@Own.Date"/></td>
+                    <td>
+                        <InputSelect @bind-Value="Own.LPPeriod">
+                            @foreach (var period in Enum.GetValues(typeof(Period)))
+                            {
+                                <option value="@period">@period</option>
+                            }
+                        </InputSelect>
+                    </td>
+                    <td><input type="text" placeholder="LossPricePerPeriod" name="LossPricePerPeriod" @bind-value="@Own.LossPricePerPeriod" /></td>
+                    <td><input type="text" placeholder="Initial Price" name="InitialPrice" @bind-value="@Own.InitialPrice"/></td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <div class="justify-content-center d-flex">
+                            <button class="btn btn-primary font-32 padd-20 font-wide" @onclick="Edit">Save</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        }
+
+    </table>
+</div>
+
+
+
+
+@code
+{
+    [Parameter]
+    public Ownership Own { get; set; } = new() { Date = DateTime.Now};
+    protected bool isUserNotExist { get; set; } = true;
+
+    protected void Create()
+    {
+        if(Users.isUserExist(Own.OwnerId))
+        {
+            Owns.CreateNewOwnership(Own);
+            NavigationManager.NavigateTo("/owns");
+        }
+        else
+        {
+            isUserNotExist = false;
+        }
+    }
+
+    protected void Edit()
+    {
+        if (Users.isUserExist(Own.OwnerId))
+        {
+            Owns.EditOwnership(Own);
+            NavigationManager.NavigateTo("/owns");
+        }
+        else
+        {
+            isUserNotExist = false;
+        }
+    }
+}
